@@ -119,6 +119,11 @@ func processRun(
 			"runInfo": runCtx.RunInfo,
 		},
 	)
+	// ponytail: CreationTime→here is submission→verdict; rides existing quark_grader_.* remote_write
+	runCtx.Metrics.SummaryObserve(
+		"grader_time_to_verdict_seconds",
+		time.Since(runCtx.RunInfo.CreationTime).Seconds(),
+	)
 	if runCtx.RunInfo.Result.Verdict == "JE" {
 		// Retry the run in case it is some transient problem.
 		runCtx.Log.Info(
